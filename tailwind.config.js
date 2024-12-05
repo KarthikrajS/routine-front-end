@@ -144,6 +144,13 @@ export default {
 				primary: '#3490dc', // Primary color (will stay consistent)
 				secondary: '#ffed4a', // Secondary color (optional)
 			},
+			screens: {
+				'xs': '480px', // Custom breakpoint for very small devices
+				'sm': '640px',
+				'md': '768px',
+				'lg': '1024px',
+				'xl': '1280px',
+			},
 		},
 		variants: {
 			extend: {

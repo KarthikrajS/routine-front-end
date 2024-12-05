@@ -20,6 +20,8 @@ export const UserProvider = ({ children }) => {
                 localStorage.setItem("token", token);
                 setToken(token);
                 setUser({ email });
+                redirect("/dashboard")
+                
             })
             .catch((err) => console.log(err));
     };
@@ -42,6 +44,16 @@ export const UserProvider = ({ children }) => {
         setUser(null);
     };
 
+    const updateMood = async (mood) => {
+        try {
+            const response = await axiosInstance.put('/users/mood', { mood });
+            setUser((prev) => ({ ...prev, mood: response.data.mood }));
+        } catch (error) {
+            console.error("Failed to update mood:", error);
+        }
+    };
+
+
 
     useEffect(() => {
         if (token) {
@@ -62,7 +74,7 @@ export const UserProvider = ({ children }) => {
     }, [token]);
 
     return (
-        <UserContext.Provider value={{ user, token, login, logout }}>
+        <UserContext.Provider value={{ user, token, login, logout, updateMood }}>
             {children}
         </UserContext.Provider>
     );

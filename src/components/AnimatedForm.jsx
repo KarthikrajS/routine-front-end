@@ -28,7 +28,7 @@ export const TaskForm = ({ onSubmit }) => {
 
     const [title, setTile] = useState("");
     const [description, setDescription] = useState("");
-    const [priority, setPrioriry] = useState("high");
+    const [priority, setPrioriry] = useState("1.0");
     const [dueDate, setDueDate] = useState({
         startDate: null,
         endDate: null
@@ -46,9 +46,9 @@ export const TaskForm = ({ onSubmit }) => {
             <div className='flex  flex-col gap-2 p-2 align-middle items-start justify-center'>
                 <label>Priority:</label>
                 <select onSelect={(e) => setPrioriry(e.target.value)}>
-                    <option value="high">High Priority</option>
-                    <option value="medium">Medium Priority</option>
-                    <option value="low">Low Priority</option>
+                    <option value="1.0">High Priority</option>
+                    <option value="0.5">Medium Priority</option>
+                    <option value="0.25">Low Priority</option>
                 </select>
             </div>
             <div className='flex  flex-col gap-2 p-2 align-middle items-start justify-center'>

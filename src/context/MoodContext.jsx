@@ -13,7 +13,8 @@ const moodSettings = {
             medium: '#7f8c8d',
             low: '#bdc3c7'
         },
-        theme: 'bg-gray-100 text-gray-900',
+        // theme: 'bg-gray-100 text-gray-900',
+        theme: "bg-gray-100 text-gray-900 shadow-md border-gray-300",
         priorityMultiplier: 1.0,
     },
     monkMode: {
@@ -26,7 +27,8 @@ const moodSettings = {
             medium: '#f39c12',
             low: '#27ae60'
         },
-        theme: 'bg-gray-900 text-white',
+        // theme: 'bg-gray-900 text-white',
+        theme: "bg-black text-blue-400 shadow-lg border-gray-700",
         priorityMultiplier: 1.5,
     },
     energetic: {
@@ -40,7 +42,8 @@ const moodSettings = {
             low: '#2ecc71'
 
         },
-        theme: 'bg-yellow-100 text-yellow-900',
+        // theme: 'bg-yellow-300 text-yellow-900',
+        theme: "bg-gradient-to-r from-yellow-300 to-red-400 text-black",
         priorityMultiplier: 1.2,
     }
 };
@@ -52,7 +55,7 @@ export const MoodProvider = ({ children }) => {
         console.log(newMood, "newMood");
         setMood(newMood);
     };
-console.log(moodSettings[mood],mood, "moodSettings[mood]");
+    console.log(moodSettings[mood], mood, "moodSettings[mood]");
     return (
         <MoodContext.Provider value={{ mood, settings: moodSettings[mood], changeMood }}>
             {children}
