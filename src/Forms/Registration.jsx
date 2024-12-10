@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../hooks/axiosInstance";
 import Button from "../components/Button";
+import { useUser } from "../context/UserContext";
 
 const Register = ({ onClose }) => {
     const [name, setName] = useState("");
@@ -10,16 +11,15 @@ const Register = ({ onClose }) => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const { register } = useUser();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axiosInstance.post("/api/auth/register", {
-                name,
+            await register({name,
                 email,
-                password,
-            });
-            alert("Registration successful!");
+                password})
+
             onClose(); // Close the modal
             navigate("/dashboard"); // Redirect to dashboard
         } catch (err) {

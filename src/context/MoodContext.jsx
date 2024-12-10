@@ -8,6 +8,7 @@ const moodSettings = {
         secondary: '#e0e0e0',
         text: '#2c3e50',
         accent: '#95a5a6',
+        danger:'#F60004',
         taskPriority: {
             high: '#34495e',
             medium: '#7f8c8d',
@@ -22,6 +23,7 @@ const moodSettings = {
         secondary: '#34495e',
         text: '#ecf0f1',
         accent: '#95a5a6',
+        danger:'#F60004',
         taskPriority: {
             high: '#e74c3c',
             medium: '#f39c12',
@@ -36,6 +38,7 @@ const moodSettings = {
         secondary: '#2980b9',
         text: '#ffffff',
         accent: '#e74c3c',
+        danger:'#f60004',
         taskPriority: {
             high: '#e74c3c',
             medium: '#f1c40f',

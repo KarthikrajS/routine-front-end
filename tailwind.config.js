@@ -143,6 +143,7 @@ export default {
 				dark: '#1f2937',  // Dark theme background
 				primary: '#3490dc', // Primary color (will stay consistent)
 				secondary: '#ffed4a', // Secondary color (optional)
+				danger:'f60004'
 			},
 			screens: {
 				'xs': '480px', // Custom breakpoint for very small devices

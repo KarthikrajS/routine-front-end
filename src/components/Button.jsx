@@ -1,13 +1,14 @@
-// components/Button.jsx
+import clsx from "clsx";
 
-const Button = ({ onClick, children, className }) => {
+const Button = ({ onClick, children, className, color }) => {
   return (
     <button
       onClick={onClick}
-      className={`px-4 py-2 rounded-md font-semibold transition-colors duration-200 
-        bg-primary text-light dark:bg-secondary dark:text-dark 
-        hover:bg-primary-dark dark:hover:bg-secondary-dark focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-secondary 
-        ${className}`}
+      className={clsx(
+        "px-4 py-2 rounded-md font-semibold transition-colors duration-200 border focus:outline-none focus:ring-2",
+        color, // Apply the color class directly
+        className // Merge any additional classes
+      )}
     >
       {children}
     </button>

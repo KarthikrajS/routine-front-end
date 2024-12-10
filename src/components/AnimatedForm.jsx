@@ -28,7 +28,8 @@ export const TaskForm = ({ onSubmit }) => {
 
     const [title, setTile] = useState("");
     const [description, setDescription] = useState("");
-    const [priority, setPrioriry] = useState("1.0");
+    const [priority, setPrioriry] = useState(1.0);
+    const [taskType, setTaskType] = useState("--Select--")
     const [dueDate, setDueDate] = useState({
         startDate: null,
         endDate: null
@@ -39,16 +40,35 @@ export const TaskForm = ({ onSubmit }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            // onSubmit={(e) => { e.preventDefault(); onSubmit({ title, description, priority, dueDate }) }}
+        // onSubmit={(e) => { e.preventDefault(); onSubmit({ title, description, priority, dueDate }) }}
         >
             <Input type="text" placeholder="Task title" onChange={e => setTile(e.target.value)} theme={settings} />
             <Input type="text" placeholder="Description" theme={settings} onChange={e => setDescription(e.target.value)} />
             <div className='flex  flex-col gap-2 p-2 align-middle items-start justify-center'>
                 <label>Priority:</label>
-                <select onSelect={(e) => setPrioriry(e.target.value)}>
-                    <option value="1.0">High Priority</option>
-                    <option value="0.5">Medium Priority</option>
-                    <option value="0.25">Low Priority</option>
+                <select onChange={(e) => { setPrioriry(e.target.value) }}>
+                    <option value={1.0}>High Priority</option>
+                    <option value={0.5}>Medium Priority</option>
+                    <option value={0.25}>Low Priority</option>
+                </select>
+            </div>
+
+            <div className='flex  flex-col gap-2 p-2 align-middle items-start justify-center'>
+                <label>Task Type:</label>
+                <select value={taskType} onChange={(e) => { setTaskType(e.target.value) }}>
+                    <option value="--Select--">--Select--</option>
+                    <option value="Personal care">Personal care</option>
+                    <option value="Meals">Meals</option>
+                    <option value="Transportation">Transportation</option>
+                    <option value="Household chores">Household chores</option>
+                    <option value="Leisure">Leisure</option>
+                    <option value={"Exercise"}>Exercise</option>
+                    <option value="Work">Work</option>
+                    <option value="Social">Social</option>
+                    <option value="Incidental">Incidental</option>
+                    <option value="Coordinated">Coordinated</option>
+                    <option value="Planned">Planned</option>
+                    <option value="Miscellaneous">Miscellaneous</option>
                 </select>
             </div>
             <div className='flex  flex-col gap-2 p-2 align-middle items-start justify-center'>
@@ -64,7 +84,7 @@ export const TaskForm = ({ onSubmit }) => {
                 whileTap={{ scale: 0.95 }}
                 type="submit"
             >
-                <Button onClick={(e) => { e.preventDefault(); onSubmit({ title, description, priority, dueDate }) }}> Create Task</Button>
+                <Button onClick={(e) => { e.preventDefault(); taskType !== "--Select--" ? onSubmit({ title, description, priority, dueDate, taskType }) : alert("select task") }}> Create Task</Button>
             </motion.button>
         </Form>
     );

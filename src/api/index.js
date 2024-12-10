@@ -19,4 +19,4 @@ const fetchAPI = async (endpoint, method = 'GET', body = null, token = null) => 
 export const fetchTasks = (token, view, page) => fetchAPI(`/tasks/tasks?view=${view}&page=${page}&limit=10`, 'GET', null, token);
 export const createTask = (data, token) => fetchAPI('/tasks/tasks', 'POST', data, token);
 export const updateTask = (id, data, token) => fetchAPI(`/tasks/tasks/${id}`, 'PUT', data, token);
-export const deleteTask = (id, token) => fetchAPI(`/tasks/tasks/${id}`, 'DELETE', null, token);
+export const deleteTask = (id, data, token) => fetchAPI(`/tasks/tasks/${id}`, 'DELETE', data, token);

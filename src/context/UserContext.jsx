@@ -29,7 +29,7 @@ export const UserProvider = ({ children }) => {
     const register = async (data) => {
         const { name, email, password } = data
         axiosInstance
-            .post('/users/api/register', { name, email, password })
+            .post('/users/api/auth/register', { name, email, password })
             .then((response) => {
                 console.log(response, "response1");
                 const { user } = response;
@@ -74,7 +74,7 @@ export const UserProvider = ({ children }) => {
     }, [token]);
 
     return (
-        <UserContext.Provider value={{ user, token, login, logout, updateMood }}>
+        <UserContext.Provider value={{ user, token, login, logout, updateMood, register }}>
             {children}
         </UserContext.Provider>
     );

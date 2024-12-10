@@ -32,9 +32,10 @@ export const RoutineProvider = ({ children }) => {
         setTasks((prev) => prev.map((task) => (task._id === id ? updatedTask?.data : task)));
     };
 
-    const removeTask = async (id) => {
-        await deleteTask(id, token);
-        setTasks((prev) => prev.filter((task) => task._id !== id));
+
+    const removeTask = async (id, data) => {
+        const deletedTask = await deleteTask(id, data, token);
+        setTasks((prev) => prev.map((task) => (task._id === id ? deletedTask?.data : task)));
     };
 
 

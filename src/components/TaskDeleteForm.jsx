@@ -3,7 +3,7 @@ import Button from "./Button";
 
 import dayjs from "dayjs";
 
-const TaskUpdateModal = ({ task, isOpen, onClose, onUpdate }) => {
+const TaskDeleteModal = ({ task, isOpen, onClose, onUpdate }) => {
     console.log(task, "taskwadssd");
     const [actualTask, setActualTask] = useState(task);
     const [status, setStatus] = useState(task?.status || "");
@@ -27,7 +27,7 @@ const TaskUpdateModal = ({ task, isOpen, onClose, onUpdate }) => {
     return (
 
         <div className="bg-white p-6 rounded shadow-lg sm:w-96">
-            <h2 className="text-lg font-semibold mb-4">Update Task</h2>
+            <h2 className="text-lg font-semibold mb-4">Delete Task</h2>
             <div className="mb-4">
                 <label className="block mb-1 font-medium">{actualTask?.title}</label>
 
@@ -37,6 +37,7 @@ const TaskUpdateModal = ({ task, isOpen, onClose, onUpdate }) => {
                 <input
                     type="date"
                     value={dayjs(actualTask?.dueDate?.startDate).format("YYYY-MM-DD")}
+                    disabled
                     onChange={(e) => setActualTask({
                         ...task, // Copy the old fields
                         dueDate: { ...task.dueDate, startDate: e.target.value } // But override this one
@@ -48,6 +49,7 @@ const TaskUpdateModal = ({ task, isOpen, onClose, onUpdate }) => {
                 <label className="block mb-1 font-medium">Planned End Date</label>
                 <input
                     type="date"
+                    disabled
                     value={dayjs(actualTask?.dueDate?.endDate).format("YYYY-MM-DD")}
                     onChange={(e) => setActualTask({
                         ...task, // Copy the old fields
@@ -57,18 +59,18 @@ const TaskUpdateModal = ({ task, isOpen, onClose, onUpdate }) => {
                 />
             </div>
             <div className="mb-4">
-                <label className="block mb-1 font-medium">Status</label>
-                <select
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)}
+                <label className="block mb-1 font-medium">Reason</label>
+                <input
+                    type="text"
+                    value={actualTask?.feedback}
+                    onChange={(e) => setActualTask({
+                        ...task, // Copy the old fields
+                        feedback: e.target.value, // But override this one
+                    })}
                     className="w-full border rounded p-2"
-                >
-                    <option value="pending">Pending</option>
-                    <option value="in_progress">In Progress</option>
-                    <option value="completed">Completed</option>
-                </select>
+                />
             </div>
-            <div className="mb-4">
+            {/* <div className="mb-4">
                 <label className="block mb-1 font-medium">Actual Start Date</label>
                 <input
                     type="date"
@@ -85,7 +87,7 @@ const TaskUpdateModal = ({ task, isOpen, onClose, onUpdate }) => {
                     onChange={(e) => setActualEnd(e.target.value)}
                     className="w-full border rounded p-2"
                 />
-            </div>
+            </div> */}
             <div className="flex justify-end">
                 <button
                     className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
@@ -97,13 +99,13 @@ const TaskUpdateModal = ({ task, isOpen, onClose, onUpdate }) => {
                     className="bg-blue-500 text-white px-4 py-2 rounded"
                     onClick={handleSubmit}
                 >
-                    Update Task
+                    Delete Task
                 </Button>
-                
+
             </div>
 
         </div>
     );
 };
 
-export default TaskUpdateModal;
+export default TaskDeleteModal;
