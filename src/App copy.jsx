@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
-import About from './pages/About';
+// import About from './pages/About';
 import { useTheme } from "./context/ThemeContext";
 import Button from "./components/Button"; // Button component import
 import { useState } from 'react';
@@ -22,7 +22,7 @@ function App() {
         <Navbar openModal={openModal} closeModal={closeModal} isModalOpen={isModalOpen}/>
         <Routes>
           <Route path="/" element={<Home isDark={isDark} toggleTheme={toggleTheme} />} />
-          <Route path="/about" element={<About />} />
+          {/* <Route path="/about" element={<About />} /> */}
         </Routes>
       </BrowserRouter>
     </div>

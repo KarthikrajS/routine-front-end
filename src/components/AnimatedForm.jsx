@@ -84,7 +84,7 @@ export const TaskForm = ({ onSubmit }) => {
                 whileTap={{ scale: 0.95 }}
                 type="submit"
             >
-                <Button onClick={(e) => { e.preventDefault(); taskType !== "--Select--" ? onSubmit({ title, description, priority, dueDate, taskType }) : alert("select task") }}> Create Task</Button>
+                <Button color="bg-[#f5f5f5]" onClick={(e) => { e.preventDefault(); taskType !== "--Select--" ? onSubmit({ title, description, priority, dueDate, taskType }) : alert("select task") }}> Create Task</Button>
             </motion.button>
         </Form>
     );

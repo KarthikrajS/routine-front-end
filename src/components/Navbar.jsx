@@ -10,7 +10,7 @@
 //     return (
 //         <nav className="flex justify-between items-center p-4 bg-light dark:bg-dark-dark text-dark dark:text-light shadow-md">
 //             <div className="flex items-center space-x-6">
-//                 <Link to="/" className="font-bold text-2xl">Brand</Link>
+//                 <Link to="/" className="font-bold text-2xl">Routine App</Link>
 //                 <Link to="/" className="text-lg">Home</Link>
 //                 <Link to="/about" className="text-lg">About</Link>
 //             </div>
@@ -54,9 +54,9 @@ const Navbar = (props) => {
     return (
         <nav className="flex justify-between items-center p-4 bg-light dark:bg-dark-dark text-dark dark:text-light shadow-md">
             <div className="flex items-center space-x-6">
-                <Link to="/" className="font-bold text-2xl">Brand</Link>
-                <Link to="/" className="text-lg">Home</Link>
-                <Link to="/about" className="text-lg">About</Link>
+                <Link to="/" className="font-bold text-2xl">Routine App</Link>
+                {/* <Link to="/" className="text-lg">Home</Link> */}
+                {/* <Link to="/about" className="text-lg">About</Link> */}
             </div>
             <div className="flex gap-2">
                 <Button onClick={toggleTheme}>
