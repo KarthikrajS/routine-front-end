@@ -52,16 +52,16 @@
 FROM node:20-alpine  
 
 # working directory 
-WORKDIR /app/fronted
+WORKDIR /app
 
 # Changes in package* . json file 
-COPY package*.json ./
+COPY client/package*.json ./
 
 # Install Dependencies
 RUN npm install
 
 # Copy all changes on fronted
-COPY . .
+COPY client/ .
 
 # expose the app on port 5173
 EXPOSE 5173
