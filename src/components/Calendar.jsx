@@ -5,8 +5,8 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 // import { Calendar } from 'react-big-calendar'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
 import { useCallback, useMemo } from 'react';
-
-const locales = { 'en-US': import('date-fns/locale/en-US') };
+import enUS from 'date-fns/locale/en-US';
+const locales = { 'en-US': enUS };
 const localizer = dateFnsLocalizer({ format, parse, startOfWeek, getDay, locales });
 
 const CalendarView = ({ tasks, setTasks, openModal, setSelectedTask }) => {
@@ -19,7 +19,7 @@ const CalendarView = ({ tasks, setTasks, openModal, setSelectedTask }) => {
         status: task?.status,
         priority: task?.priority,
         id: task?._id
-        
+
     }));
 
     const DnDCalendar = withDragAndDrop(Calendar)
