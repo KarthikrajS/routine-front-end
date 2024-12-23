@@ -1,12 +1,10 @@
-// components/TaskForm.jsx
 import { motion } from 'framer-motion';
-// import { useMood } from '../contexts/MoodContext';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { MoodContext } from '../context/MoodContext';
 import Button from './Button';
 import Datepicker from "react-tailwindcss-datepicker";
-
+import WeekdayPicker from './WeekdayPicker';
 
 const useMood = () => useContext(MoodContext);
 const Form = styled(motion.form)`
@@ -23,37 +21,53 @@ const Input = styled.input`
   border-radius: 4px;
 `;
 
-export const TaskForm = ({ onSubmit }) => {
+const Checkbox = styled.input`
+  margin-right: 0.5rem;
+`;
+
+const TaskForm = ({ selectedDays, setSelectedDays, weeks, setWeeks, onSubmit }) => {
     const { settings } = useMood();
 
-    const [title, setTile] = useState("");
+    const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [priority, setPrioriry] = useState(1.0);
-    const [taskType, setTaskType] = useState("--Select--")
+    const [priority, setPriority] = useState(1.0);
+    const [taskType, setTaskType] = useState("--Select--");
     const [dueDate, setDueDate] = useState({
         startDate: null,
         endDate: null
     });
+
+    const [isRoutine, setIsRoutine] = useState(false);
+
+
+    const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+    const handleDaySelection = (day) => {
+        setSelectedDays(prev =>
+            prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day]
+        );
+    };
+
     return (
         <Form
             theme={settings}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-        // onSubmit={(e) => { e.preventDefault(); onSubmit({ title, description, priority, dueDate }) }}
         >
-            <Input type="text" placeholder="Task title" onChange={e => setTile(e.target.value)} theme={settings} />
+            <Input type="text" placeholder="Task title" onChange={e => setTitle(e.target.value)} theme={settings} />
             <Input type="text" placeholder="Description" theme={settings} onChange={e => setDescription(e.target.value)} />
-            <div className='flex  flex-col gap-2 p-2 align-middle items-start justify-center'>
+
+            <div className='flex flex-col gap-2 p-2 align-middle items-start justify-center'>
                 <label>Priority:</label>
-                <select onChange={(e) => { setPrioriry(e.target.value) }}>
+                <select onChange={(e) => { setPriority(e.target.value) }}>
                     <option value={1.0}>High Priority</option>
                     <option value={0.5}>Medium Priority</option>
                     <option value={0.25}>Low Priority</option>
                 </select>
             </div>
 
-            <div className='flex  flex-col gap-2 p-2 align-middle items-start justify-center'>
+            <div className='flex flex-col gap-2 p-2 align-middle items-start justify-center'>
                 <label>Task Type:</label>
                 <select value={taskType} onChange={(e) => { setTaskType(e.target.value) }}>
                     <option value="--Select--">--Select--</option>
@@ -62,7 +76,7 @@ export const TaskForm = ({ onSubmit }) => {
                     <option value="Transportation">Transportation</option>
                     <option value="Household chores">Household chores</option>
                     <option value="Leisure">Leisure</option>
-                    <option value={"Exercise"}>Exercise</option>
+                    <option value="Exercise">Exercise</option>
                     <option value="Work">Work</option>
                     <option value="Social">Social</option>
                     <option value="Incidental">Incidental</option>
@@ -71,7 +85,8 @@ export const TaskForm = ({ onSubmit }) => {
                     <option value="Miscellaneous">Miscellaneous</option>
                 </select>
             </div>
-            <div className='flex  flex-col gap-2 p-2 align-middle items-start justify-center'>
+
+            <div className='flex flex-col gap-2 p-2 align-middle items-start justify-center'>
                 <label>Planned Date:</label>
                 <Datepicker
                     value={dueDate}
@@ -79,13 +94,64 @@ export const TaskForm = ({ onSubmit }) => {
                     showShortcuts={true}
                 />
             </div>
+
+            <div className='flex flex-col gap-2 p-2 align-middle items-start justify-center'>
+                <Checkbox
+                    type="checkbox"
+                    checked={isRoutine}
+                    onChange={() => setIsRoutine(!isRoutine)}
+                />
+                <label>Set as a routine</label>
+            </div>
+
+            {isRoutine && (
+                <div className='flex flex-col gap-2 p-2 align-middle items-start justify-center'>
+                    <div className="mb-4 w-[285px]">
+                        <label className="block  text-gray-700 font-bold mb-2">Select Days</label>
+                        <WeekdayPicker onChange={setSelectedDays} />
+                    </div>
+                    <label>
+                        Repeat for weeks:
+                        <Input
+                            type="number"
+                            min="1"
+                            value={weeks}
+                            onChange={(e) => setWeeks(Number(e.target.value))}
+                        />
+                    </label>
+                </div>
+            )}
+
             <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 type="submit"
             >
-                <Button color="bg-[#f5f5f5]" onClick={(e) => { e.preventDefault(); taskType !== "--Select--" ? onSubmit({ title, description, priority, dueDate, taskType }) : alert("select task") }}> Create Task</Button>
+                <Button
+                    color="bg-[#f5f5f5]"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        if (taskType === "--Select--") {
+                            alert("Select task type");
+                        } else {
+                            onSubmit({
+                                title,
+                                description,
+                                priority,
+                                dueDate,
+                                taskType,
+                                isRoutine,
+                                selectedDays: isRoutine ? selectedDays : null,
+                                weeks: isRoutine ? weeks : null,
+                            });
+                        }
+                    }}
+                >
+                    Create Task
+                </Button>
             </motion.button>
         </Form>
     );
 };
+
+export default TaskForm

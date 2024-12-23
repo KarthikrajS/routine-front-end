@@ -6,7 +6,7 @@ import MoodToggle from '../components/MoodToggle';
 import ListView from '../components/ListView';
 import { TaskList } from '../components/TaskList';
 import { MoodSelector } from '../components/MoodSelector';
-import { TaskForm } from '../components/AnimatedForm';
+import TaskForm from '../components/AnimatedForm';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
 import CalendarView from '../components/Calendar';
@@ -31,49 +31,99 @@ const Dashboard = () => {
     const toggleDeleteModal = () => setIsDeletModalOpen(prev => !prev)
     const { addTask, tasks, removeTask, updateExistingTask, view, page, totalTasks, setView, setPage } = useContext(RoutineContext);
     const [selectedTask, setSelectedTask] = useState(null);
+    const [selectedDays, setSelectedDays] = useState([]);
+    const [weeks, setWeeks] = useState(1);
 
+    // const handleCreateTask = async (newTask) => {
+
+    //     const newTaskPayload = {
+    //         "userId": user?._id,
+    //         "title": newTask?.title,
+    //         "description": newTask?.description,
+    //         "priority": newTask?.priority,
+    //         "dueDate": {
+    //             "startDate": new Date(newTask?.dueDate?.startDate),
+    //             "endDate": new Date(newTask?.dueDate?.endDate)
+    //         },
+    //         // "plannedStartTime": {
+    //         //     "date": "2024-11-28T14:45:15",
+    //         //     "time": "6:00"
+    //         // },
+    //         // "actualStartAt": {
+    //         //     "date": "2024-11-28T14:45:15",
+    //         //     "time": "6:00"
+    //         // },
+    //         // "completedAt": {
+    //         //     "date": "2024-11-28T14:45:15",
+    //         //     "time": "9:00"
+    //         // },
+    //         "status": 'pending',
+    //         "taskType": newTask?.taskType,
+    //         "assigntTo": {
+    //             "_id": "674761fdf2e05f89435a0338",
+    //             "username": "KJ"
+    //         }
+    //     }
+
+    //     const taskResult = await addTask(newTaskPayload);
+    //     console.log(taskResult, "taskResult");
+    //     // if (taskResult?.ok) {
+    //     //     setTasks((prevTasks) => [
+    //     //         ...prevTasks,
+    //     //         { ...taskResult?.data, id: Date.now(), status: 'pending' }
+    //     //     ]);
+    //     // }
+
+    // };
     const handleCreateTask = async (newTask) => {
+        // Convert the days into date objects across the selected weeks
+        const currentDate = new Date();
+        const tasks = [];
 
-        const newTaskPayload = {
-            "userId": user?._id,
-            "title": newTask?.title,
-            "description": newTask?.description,
-            "priority": newTask?.priority,
-            "dueDate": {
-                "startDate": new Date(newTask?.dueDate?.startDate),
-                "endDate": new Date(newTask?.dueDate?.endDate)
-            },
-            // "plannedStartTime": {
-            //     "date": "2024-11-28T14:45:15",
-            //     "time": "6:00"
-            // },
-            // "actualStartAt": {
-            //     "date": "2024-11-28T14:45:15",
-            //     "time": "6:00"
-            // },
-            // "completedAt": {
-            //     "date": "2024-11-28T14:45:15",
-            //     "time": "9:00"
-            // },
-            "status": 'pending',
-            "taskType":newTask?.taskType,
-            "assigntTo": {
-                "_id": "674761fdf2e05f89435a0338",
-                "username": "KJ"
+        for (let week = 0; week < weeks; week++) {
+            for (const day of selectedDays) {
+                const dayOffset = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(day);
+                const nextDate = new Date(currentDate);
+
+                // Calculate the target date for the day in the week
+                nextDate.setDate(currentDate.getDate() + week * 7 + (dayOffset - currentDate.getDay() + 7) % 7);
+
+                const newTaskPayload = {
+                    userId: user?._id,
+                    title: newTask?.title,
+                    description: newTask?.description,
+                    priority: newTask?.priority,
+                    dueDate: {
+                        startDate: nextDate,
+                        endDate: nextDate, // Same day, modify if needed
+                    },
+                    status: "pending",
+                    taskType: newTask?.taskType,
+                    assigntTo: {
+                        _id: "674761fdf2e05f89435a0338",
+                        username: "KJ",
+                    },
+                };
+
+                tasks.push(newTaskPayload);
             }
         }
 
-        const taskResult = await addTask(newTaskPayload);
-        console.log(taskResult, "taskResult");
-        // if (taskResult?.ok) {
-        //     setTasks((prevTasks) => [
-        //         ...prevTasks,
-        //         { ...taskResult?.data, id: Date.now(), status: 'pending' }
-        //     ]);
-        // }
+        // Make API calls for each task
+        const taskPromises = tasks.map((task) => addTask(task));
+        const taskResults = await Promise.all(taskPromises);
 
+        console.log(taskResults, "All tasks created");
+
+        // Handle responses if needed
+        const successfulTasks = taskResults.filter((result) => result?.ok);
+        if (successfulTasks.length) {
+            console.log(`${successfulTasks.length} tasks were successfully created.`);
+        } else {
+            console.error("No tasks were created successfully.");
+        }
     };
-
+    
     const handleCompleteTask = async (taskId) => {
 
         const removerSesult = await removeTask(taskId);
@@ -143,7 +193,7 @@ const Dashboard = () => {
         <div className={`min-h-screen ${settings.theme}  items-center justify-center flex flex-col p-4`}>
             {/* <h1>Dashboard - Mood: {mood}</h1> */}
             <Modal isOpen={isModalOpen} onClose={toggleModal}>
-                <TaskForm onSubmit={handleCreateTask} />
+                <TaskForm onSubmit={handleCreateTask} selectedDays={selectedDays} setSelectedDays={setSelectedDays} weeks={weeks} setWeeks={setWeeks} />
             </Modal>
 
             <Modal isOpen={isUpdateModalOpen} onClose={toggleUpdateModal}>

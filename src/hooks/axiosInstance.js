@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: import.meta.env.REACT_APP_API_URL || "http://localhost:8000", // Default to localhost
+    baseURL: import.meta.env.REACT_APP_API_URL || "https://gateway-rbze.onrender.com", // Default to localhost
     headers: {
         "Content-Type": "application/json",
     },

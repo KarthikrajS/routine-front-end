@@ -1,7 +1,7 @@
 // TaskService.js - Frontend Service to Handle CRUD Operations
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000/api/tasks';
+const API_URL = 'https://gateway-rbze.onrender.com/api/tasks';
 
 export const createTask = async (taskData) => {
     try {
