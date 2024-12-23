@@ -26,10 +26,10 @@
 
 // pages/Home.jsx
 import React, { useState } from "react";
-import Button from "../components/Button";
-import Card from "../components/Card";
-import Modal from "../components/Modal";
-import Alert from "../components/Alert";
+import Button from "../components/Button.jsx";
+import Card from "../components/Card.jsx";
+import Modal from "../components/Modal.jsx";
+import Alert from "../components/Alert.jsx";
 import Navbar from "../components/Navbar";
 
 const Home = () => {

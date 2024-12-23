@@ -28,11 +28,11 @@ import React from "react";
 import Button from "./Button";
 import { useTheme } from "../context/ThemeContext";
 import { Link, useNavigate } from "react-router-dom";
-import Modal from "./Modal";
+import Modal from "./Modal.jsx";
 import AuthModal from "../Forms/AuthModal";
-import Dropdown from "./DropDown";
-import MoodToggle from "./MoodToggle";
-import { MoodSelector } from "./MoodSelector";
+import Dropdown from "./DropDown.jsx";
+// import MoodToggle from "./MoodToggle";
+import { MoodSelector } from "./MoodSelector.jsx";
 
 
 const Navbar = (props) => {

@@ -1,28 +1,28 @@
 import { useContext, useEffect, useState } from 'react';
-import { MoodContext } from '../context/MoodContext';
+import { MoodContext } from '../context/MoodContext.jsx';
 
 // import TaskForm from '../Forms/TaskForm';
-import MoodToggle from '../components/MoodToggle';
-import ListView from '../components/ListView';
-import { TaskList } from '../components/TaskList';
-import { MoodSelector } from '../components/MoodSelector';
-import TaskForm from '../components/AnimatedForm';
-import Button from '../components/Button';
-import Modal from '../components/Modal';
-import CalendarView from '../components/Calendar';
-import { RoutineContext } from '../context/RoutineContext';
-import TaskUpdateModal from '../components/TaskUpdateForm';
+// import MoodToggle from '../components/MoodToggle';
+import ListView from '../components/ListView.jsx';
+// import { TaskList } from '../components/TaskList';
+// import { MoodSelector } from '../components/MoodSelector';
+import TaskForm from '../components/AnimatedForm.jsx';
+import Button from '../components/Button.jsx';
+import Modal from '../components/Modal.jsx';
+import CalendarView from '../components/Calendar.jsx';
+import { RoutineContext } from '../context/RoutineContext.jsx';
+import TaskUpdateModal from '../components/TaskUpdateForm.jsx';
 import { redirect } from 'react-router-dom';
-import TabsRender from '../components/Tabs';
-import { useUser } from '../context/UserContext';
-import TaskDeleteModal from '../components/TaskDeleteForm';
+import TabsRender from '../components/Tabs.jsx';
+import { useUser } from '../context/UserContext.jsx';
+import TaskDeleteModal from '../components/TaskDeleteForm.jsx';
 
 
 const Dashboard = () => {
     const { mood, settings } = useContext(MoodContext);
     // const [tasks, setTasks] = useState([]);
     const { user } = useUser();
-    console.log(user, "Asddasddddasdasd");
+    // console.log(user, "Asddasddddasdasd");
     const [isModalOpen, setModalOpen] = useState(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [isDeletModalOpen, setIsDeletModalOpen] = useState(false);
@@ -113,7 +113,7 @@ const Dashboard = () => {
         const taskPromises = tasks.map((task) => addTask(task));
         const taskResults = await Promise.all(taskPromises);
 
-        console.log(taskResults, "All tasks created");
+        // console.log(taskResults, "All tasks created");
 
         // Handle responses if needed
         const successfulTasks = taskResults.filter((result) => result?.ok);
@@ -123,7 +123,7 @@ const Dashboard = () => {
             console.error("No tasks were created successfully.");
         }
     };
-    
+
     const handleCompleteTask = async (taskId) => {
 
         const removerSesult = await removeTask(taskId);
@@ -146,7 +146,7 @@ const Dashboard = () => {
 
     const handleTaskUpdate = async (updatedTask) => {
 
-        console.log(updatedTask, "updatedTask");
+        // console.log(updatedTask, "updatedTask");
         const updateResult = await updateExistingTask(updatedTask?.id || updatedTask?._id, updatedTask)
 
         if (updateResult?.data) {
@@ -156,7 +156,7 @@ const Dashboard = () => {
 
     const handleTaskDelete = async (updatedTask) => {
 
-        console.log(updatedTask, "updatedTask");
+        // console.log(updatedTask, "updatedTask");
         updatedTask.status = "deferred"
         const updateResult = await removeTask(updatedTask?.id || updatedTask?._id, updatedTask)
 

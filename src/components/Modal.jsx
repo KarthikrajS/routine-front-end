@@ -1,6 +1,6 @@
 // components/Modal.jsx
 import React from "react";
-import Button from "./Button";
+import Button from "./Button.jsx";
 import { motion } from "framer-motion";
 
 

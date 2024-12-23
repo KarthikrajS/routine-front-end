@@ -1,15 +1,15 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
-import Dashboard from './pages/Dashboard';
-import { useTheme } from "./context/ThemeContext";
+import Dashboard from './pages/Dashboard.jsx';
+import { useTheme } from "./context/ThemeContext.jsx";
 import Button from "./components/Button"; // Button component import
 import { useState } from 'react';
 import Modal from './components/Modal';
 import Register from './Forms/Registration';
 import AuthModal from './Forms/AuthModal';
-import Navbar from './components/Navbar';
-import { useUser } from './context/UserContext';
+import Navbar from './components/Navbar.jsx';
+import { useUser } from './context/UserContext.jsx';
 
 function App() {
   const { user, logout } = useUser()

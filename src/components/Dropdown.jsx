@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Button from "./Button";
+import Button from "./Button.jsx";
 
 const Dropdown = ({ items, onLogout, buttonName }) => {
     const [isOpen, setIsOpen] = useState(false);

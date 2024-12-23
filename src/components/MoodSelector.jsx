@@ -2,8 +2,8 @@
 import { motion } from 'framer-motion';
 import { useContext } from 'react';
 import styled from 'styled-components';
-import { MoodContext } from '../context/MoodContext';
-import Dropdown from './DropDown';
+import { MoodContext } from '../context/MoodContext.jsx';
+import Dropdown from './DropDown.jsx';
 
 const useMood = () => useContext(MoodContext);
 const MoodButton = styled(motion.button)`
