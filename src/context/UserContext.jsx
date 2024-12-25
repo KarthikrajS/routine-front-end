@@ -21,10 +21,33 @@ export const UserProvider = ({ children }) => {
                 setToken(token);
                 setUser({ email });
                 redirect("/dashboard")
-                
+
             })
             .catch((err) => console.log(err));
     };
+
+    const googleLogin = async ({ credentials, decodedToken }) => {
+        console.log(decodedToken);
+        const { email, name, picture, locale, gender, age, email_verified } = decodedToken
+        // Send data to the backend
+        const response = await axiosInstance.post("/users/api/auth/google-login", {
+            token: credentials,
+            email,
+            name,
+            picture,
+            locale,
+            is_verified: email_verified,
+            gender, // May require additional steps to get this info
+            age,    // May require additional steps to get this info
+        });
+
+        const { token } = response.data
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        localStorage.setItem("token", token);
+        setToken(token);
+        setUser({ email });
+        redirect("/dashboard")
+    }
 
     const register = async (data) => {
         const { name, email, password } = data
@@ -74,7 +97,7 @@ export const UserProvider = ({ children }) => {
     }, [token]);
 
     return (
-        <UserContext.Provider value={{ user, token, login, logout, updateMood, register }}>
+        <UserContext.Provider value={{ user, token, login, googleLogin, logout, updateMood, register }}>
             {children}
         </UserContext.Provider>
     );
