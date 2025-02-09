@@ -26,3 +26,4 @@ dist-ssr
 later.txt
 example.txt
 .env
+.env.dev

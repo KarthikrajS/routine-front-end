@@ -39,13 +39,36 @@ const TaskForm = ({ selectedDays, setSelectedDays, weeks, setWeeks, onSubmit }) 
 
     const [isRoutine, setIsRoutine] = useState(false);
 
-
-    const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-
     const handleDaySelection = (day) => {
         setSelectedDays(prev =>
             prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day]
         );
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (taskType === "--Select--") {
+            alert("Select task type");
+            return;
+        }
+
+        const taskData = {
+            title,
+            description,
+            priority,
+            dueDate,
+            taskType,
+        };
+
+        if (isRoutine) {
+            // Include routine-specific fields
+            taskData.isRoutine = true;
+            taskData.selectedDays = selectedDays;
+            taskData.weeks = weeks;
+        }
+
+        onSubmit(taskData);
     };
 
     return (
@@ -54,13 +77,14 @@ const TaskForm = ({ selectedDays, setSelectedDays, weeks, setWeeks, onSubmit }) 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
+            onSubmit={handleSubmit}
         >
             <Input type="text" placeholder="Task title" onChange={e => setTitle(e.target.value)} theme={settings} />
             <Input type="text" placeholder="Description" theme={settings} onChange={e => setDescription(e.target.value)} />
 
             <div className='flex flex-col gap-2 p-2 align-middle items-start justify-center'>
                 <label>Priority:</label>
-                <select onChange={(e) => { setPriority(e.target.value) }}>
+                <select onChange={(e) => setPriority(e.target.value)}>
                     <option value={1.0}>High Priority</option>
                     <option value={0.5}>Medium Priority</option>
                     <option value={0.25}>Low Priority</option>
@@ -69,7 +93,7 @@ const TaskForm = ({ selectedDays, setSelectedDays, weeks, setWeeks, onSubmit }) 
 
             <div className='flex flex-col gap-2 p-2 align-middle items-start justify-center'>
                 <label>Task Type:</label>
-                <select value={taskType} onChange={(e) => { setTaskType(e.target.value) }}>
+                <select value={taskType} onChange={(e) => setTaskType(e.target.value)}>
                     <option value="--Select--">--Select--</option>
                     <option value="Personal care">Personal care</option>
                     <option value="Meals">Meals</option>
@@ -96,18 +120,26 @@ const TaskForm = ({ selectedDays, setSelectedDays, weeks, setWeeks, onSubmit }) 
             </div>
 
             <div className='flex flex-col gap-2 p-2 align-middle items-start justify-center'>
-                <Checkbox
+
+                <label class="inline-flex items-center cursor-pointer">
+                    <Checkbox type="checkbox" checked={isRoutine}
+                        onChange={() => setIsRoutine(!isRoutine)} className="sr-only peer" />
+                    <div class="relative w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                    <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Set as a routine</span>
+                </label>
+
+                {/* <Checkbox
                     type="checkbox"
                     checked={isRoutine}
                     onChange={() => setIsRoutine(!isRoutine)}
                 />
-                <label>Set as a routine</label>
+                <label>Set as a routine</label> */}
             </div>
 
             {isRoutine && (
                 <div className='flex flex-col gap-2 p-2 align-middle items-start justify-center'>
                     <div className="mb-4 w-[285px]">
-                        <label className="block  text-gray-700 font-bold mb-2">Select Days</label>
+                        <label className="block text-gray-700 font-bold mb-2">Select Days</label>
                         <WeekdayPicker onChange={setSelectedDays} />
                     </div>
                     <label>
@@ -127,26 +159,7 @@ const TaskForm = ({ selectedDays, setSelectedDays, weeks, setWeeks, onSubmit }) 
                 whileTap={{ scale: 0.95 }}
                 type="submit"
             >
-                <Button
-                    color="bg-[#f5f5f5]"
-                    onClick={(e) => {
-                        e.preventDefault();
-                        if (taskType === "--Select--") {
-                            alert("Select task type");
-                        } else {
-                            onSubmit({
-                                title,
-                                description,
-                                priority,
-                                dueDate,
-                                taskType,
-                                isRoutine,
-                                selectedDays: isRoutine ? selectedDays : null,
-                                weeks: isRoutine ? weeks : null,
-                            });
-                        }
-                    }}
-                >
+                <Button color="bg-[#f5f5f5]">
                     Create Task
                 </Button>
             </motion.button>
@@ -154,4 +167,5 @@ const TaskForm = ({ selectedDays, setSelectedDays, weeks, setWeeks, onSubmit }) 
     );
 };
 
-export default TaskForm
+export default TaskForm;
+

@@ -120,7 +120,7 @@ const Login = ({ onClose, toggleForm }) => {
     };
 
     return (
-        <GoogleOAuthProvider clientId="951190317533-5i7qnra1drubaoi59559oss8eht8b7u7.apps.googleusercontent.com">
+      
             <form onSubmit={handleSubmit}>
                 <h2 className="text-xl font-semibold mb-4">Login</h2>
                 {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -168,7 +168,7 @@ const Login = ({ onClose, toggleForm }) => {
                     </span>
                 </p>
             </form>
-        </GoogleOAuthProvider>
+        // </GoogleOAuthProvider>
     );
 };
 

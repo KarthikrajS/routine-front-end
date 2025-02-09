@@ -17,7 +17,8 @@ const TaskUpdateModal = ({ task, isOpen, onClose, onUpdate }) => {
             actualStartAt: { date: new Date(actualStart) },
             completedAt: { date: new Date(actualEnd) },
         };
-        onUpdate(updatedTask);
+        console.log(updatedTask, "updatedTask");
+        onUpdate(actualTask?._id, updatedTask);
         onClose();
     };
 
@@ -99,7 +100,7 @@ const TaskUpdateModal = ({ task, isOpen, onClose, onUpdate }) => {
                 >
                     Update Task
                 </Button>
-                
+
             </div>
 
         </div>

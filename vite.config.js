@@ -19,7 +19,7 @@ export default defineConfig({
     filename: './stats.html',
     open: true,
   }), react()],
-  base: "/routine-front-end/",
+  base: "/routine-front-end",
   css: {
     postcss: {
       plugins: [tailwindcss()],

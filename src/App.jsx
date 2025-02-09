@@ -10,6 +10,8 @@ import Register from './Forms/Registration';
 import AuthModal from './Forms/AuthModal';
 import Navbar from './components/Navbar.jsx';
 import { useUser } from './context/UserContext.jsx';
+import Footer from './pages/Footer.jsx';
+import TaskManager from './pages/TaskManager.jsx';
 
 function App() {
   const { user, logout } = useUser()
@@ -29,14 +31,16 @@ function App() {
 
   return (
     <div className={`min-h-screen bg-light dark:bg-dark text-dark dark:text-light`}>
-      <BrowserRouter>
+      <BrowserRouter basename="/routine-front-end">
         <Navbar user={user} logout={logout} openModal={openModal} closeModal={closeModal} isModalOpen={isModalOpen} />
         <Routes>
           {/* <Route path="/login" element={<GuestRoute><Login /></GuestRoute>}/> */}
           <Route path="/" element={<GuestRoute><Home isDark={isDark} toggleTheme={toggleTheme} /></GuestRoute>} />
           <Route path="/dashboard" element={<UserRoute><Dashboard /></UserRoute>} />
-          <Route path="/about" element={<About />} />
+          <Route path="/task-manager" element={<UserRoute><TaskManager /></UserRoute>} />
+          {/* <Route path="/mood" element={<UserRoute><MoodT /></UserRoute>} /> */}
         </Routes>
+        <Footer />
       </BrowserRouter>
     </div>
   );

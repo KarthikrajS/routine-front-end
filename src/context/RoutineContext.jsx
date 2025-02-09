@@ -10,13 +10,22 @@ export const RoutineProvider = ({ children }) => {
     const { token } = useUser();
     const [tasks, setTasks] = useState([]);
     const [page, setPage] = useState(1);
+    // const [date, setDate] = useState(new Date().toISOString().split('T')[0])
     const [totalPages, setTotalPages] = useState(1);
     const [totalTasks, setTotalTasks] = useState(0);
     const [view, setView] = useState("list");
 
     useEffect(() => {
         if (token) {
-            fetchTasks(token, view, page).then((tasks) => { console.log(tasks, "tasks"); setTasks(tasks?.tasks); setTotalPages(tasks?.totalPages); setTotalTasks(tasks?.totalTasks) }).catch(console.error);
+            fetchTasks(token, view, page)
+                .then((tasks) => {
+                    console.log(tasks, "tasks");
+                    setTasks(tasks?.tasks);
+                    setTotalPages(tasks?.totalPages);
+                    setTotalTasks(tasks?.totalTasks);
+                })
+                .catch(console.error);
+
         }
     }, [token, page]);
 
@@ -28,6 +37,7 @@ export const RoutineProvider = ({ children }) => {
     };
 
     const updateExistingTask = async (id, data) => {
+        console.log(data, "data");
         const updatedTask = await updateTask(id, data, token);
         setTasks((prev) => prev.map((task) => (task._id === id ? updatedTask?.data : task)));
     };
