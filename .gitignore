@@ -27,3 +27,4 @@ later.txt
 example.txt
 .env
 .env.dev
+package-lock.json

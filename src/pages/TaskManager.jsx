@@ -103,10 +103,7 @@ const TaskManager = () => {
     ];
 
     return (
-        <div
-            className={`min-h-screen ${isDark ? "bg-monkMode-primary text-monkMode-text" : "bg-minimalist-primary text-minimalist-text"
-                } font-sans p-4`}
-        >
+        <>
             <button onClick={toggleModal} className="bg-blue-500 dark:bg-[#1A1A1A] text-white px-4 py-2 rounded-full fixed top-24 right-4 shadow-lg z-50">
                 ⚡ Quick Add Task
             </button>
@@ -142,7 +139,7 @@ const TaskManager = () => {
 
 
 
-        </div>
+        </>
     );
 };
 

@@ -12,6 +12,7 @@ import Navbar from './components/Navbar.jsx';
 import { useUser } from './context/UserContext.jsx';
 import Footer from './pages/Footer.jsx';
 import TaskManager from './pages/TaskManager.jsx';
+import Sidebar from './components/SideNav.jsx';
 
 function App() {
   const { user, logout } = useUser()
@@ -26,24 +27,57 @@ function App() {
   };
 
   const UserRoute = ({ children }) => {
-    return user ? children : <Navigate to="/" />;
+    return user ? (
+      <div className="flex min-h-screen bg-light dark:bg-dark text-dark dark:text-light">
+        {/* Sidebar should only appear for logged-in users */}
+        <Sidebar />
+
+        {/* Main content area */}
+        <div className="flex-1 flex flex-col">
+          {/* <Navbar user={user} logout={logout} openModal={openModal} closeModal={closeModal} isModalOpen={isModalOpen} /> */}
+          <div
+            className={`min-h-screen ${isDark ? "bg-monkMode-primary text-monkMode-text" : "bg-minimalist-primary text-minimalist-text"
+              } font-sans p-1 rounded-lg`}
+          >
+            <div className="flex-1 p-4">
+              {children}
+            </div>
+            </div>
+
+          {/* <Footer /> */}
+        </div>
+      </div>
+    ) : (
+      <Navigate to="/" />
+    );
   };
 
+
   return (
-    <div className={`min-h-screen bg-light dark:bg-dark text-dark dark:text-light`}>
+    <div className={`min-h-screen bg-light dark:bg-dark text-dark dark:text-light flex`}>
       <BrowserRouter basename="/routine-front-end">
-        <Navbar user={user} logout={logout} openModal={openModal} closeModal={closeModal} isModalOpen={isModalOpen} />
-        <Routes>
-          {/* <Route path="/login" element={<GuestRoute><Login /></GuestRoute>}/> */}
-          <Route path="/" element={<GuestRoute><Home isDark={isDark} toggleTheme={toggleTheme} /></GuestRoute>} />
-          <Route path="/dashboard" element={<UserRoute><Dashboard /></UserRoute>} />
-          <Route path="/task-manager" element={<UserRoute><TaskManager /></UserRoute>} />
-          {/* <Route path="/mood" element={<UserRoute><MoodT /></UserRoute>} /> */}
-        </Routes>
-        <Footer />
+        {/* Sidebar takes up space on the left */}
+        {/* <Sidebar /> */}
+
+        {/* Main content area should grow to take remaining space */}
+        <div className="flex-1 flex flex-col">
+          <Navbar user={user} logout={logout} openModal={openModal} closeModal={closeModal} isModalOpen={isModalOpen} />
+
+          <div className="flex-1 p-4"> {/* Ensures Routes take the remaining space */}
+            <Routes>
+              <Route path="/" element={<GuestRoute><Home isDark={isDark} toggleTheme={toggleTheme} /></GuestRoute>} />
+              <Route path="/dashboard" element={<UserRoute><Dashboard /></UserRoute>} />
+              <Route path="/task-manager" element={<UserRoute><TaskManager /></UserRoute>} />
+            </Routes>
+          </div>
+
+          <Footer />
+        </div>
       </BrowserRouter>
+
     </div>
   );
+
 }
 
 export default App;
