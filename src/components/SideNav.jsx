@@ -8,7 +8,7 @@ const Sidebar = () => {
     const menuItems = [
         { name: "Dashboard", icon: <Home size={20} />, link: "/dashboard" },
         { name: "Tasks", icon: <List size={20} />, link: "/task-manager" },
-        { name: "Calendar", icon: <Calendar size={20} />, link: "#" },
+        { name: "Calendar", icon: <Calendar size={20} />, link: "/calendar" },
         { name: "Analytics", icon: <BarChart size={20} />, link: "#" },
         { name: "Settings", icon: <Settings size={20} />, link: "#" },
     ];

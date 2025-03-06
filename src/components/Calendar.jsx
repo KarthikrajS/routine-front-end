@@ -48,6 +48,7 @@ const CalendarView = ({ tasks, setTasks, openModal, setSelectedTask }) => {
     const defaultDate = useMemo(() => new Date(), [])
 
     return (
+        
         <DnDCalendar
             localizer={localizer}
             events={events}
