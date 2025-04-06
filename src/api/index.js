@@ -1,5 +1,5 @@
-// const API_BASE_URL = 'https://gateway-rbze.onrender.com'; // Gateway URL
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'https://gateway-rbze.onrender.com'; // Gateway URL
+// const API_BASE_URL = 'http://localhost:8000';
 const fetchAPI = async (endpoint, method = 'GET', body = null, token = null) => {
     const headers = { 'Content-Type': 'application/json' };
     if (token) headers['Authorization'] = `Bearer ${token}`;
