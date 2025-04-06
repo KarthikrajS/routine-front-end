@@ -1,7 +1,6 @@
 // Import existing components
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { useState, useContext } from 'react';
 import { motion } from 'framer-motion';
 import ConfettiAnimation from '../components/ConfettiAnimation';
 import StreakMeter from '../components/StreakMeter';
@@ -10,16 +9,29 @@ import { useTheme } from '../context/ThemeContext.jsx';
 import { useUser } from '../context/UserContext.jsx';
 import { Line } from "react-chartjs-2";
 import { RoutineContext } from '../context/RoutineContext.jsx';
+import ListView from '../components/ListView'; // Import ListView component
+import Modal from '../components/Modal.jsx';
+import TaskUpdateModal from '../components/TaskUpdateForm.jsx';
+import TaskDeleteModal from '../components/TaskDeleteForm.jsx';
 
 const Dashboard = () => {
     const [motivationMessage, setMotivationMessage] = useState("You're on fire! Keep it up!");
     const { settings } = useContext(MoodContext); // Access theme settings
     const { isDark } = useTheme();
     const { user } = useUser();
-    const { tasks } = useContext(RoutineContext);
+    const { tasks, todayTasks, updateExistingTask, removeTask } = useContext(RoutineContext);
 
-    const completedTasks = tasks.filter(task => task.completed).length;
-    const pendingTasks = tasks.length - completedTasks;
+    const completedTasks = todayTasks.filter(task => task.status === "completed").length;
+    const pendingTasks = todayTasks.length - completedTasks;
+
+    const [page, setPage] = useState(1);
+
+    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+    const [isDeletModalOpen, setIsDeletModalOpen] = useState(false);
+    const [selectedTask, setSelectedTask] = useState(null);
+
+    const toggleUpdateModal = () => setIsUpdateModalOpen((prev) => !prev);
+    const toggleDeleteModal = () => setIsDeletModalOpen((prev) => !prev);
 
     // Generate weekly activity data
     const weeklyData = tasks.reduce((acc, task) => {
@@ -32,7 +44,7 @@ const Dashboard = () => {
     }, {});
 
 
-    console.log(weeklyData,"weeklyData");
+    console.log(weeklyData, "weeklyData");
     const chartData = {
         labels: Object.keys(weeklyData),
         datasets: [
@@ -47,13 +59,21 @@ const Dashboard = () => {
         ],
     };
 
-    console.log(chartData, "chartData");
+    console.log(tasks, "chartData");
+    const today = new Date().toLocaleDateString();
+    // const todaysTasks = tasks?.filter(task => {
+    //     // const taskPlannedDate = task?.plannedStartTime?.date ? new Date(task?.plannedStartTime?.date).toLocaleDateString() : null;
+    //     const taskDueDate = new Date(task.dueDate.startDate).toLocaleDateString();
+
+    //     // Check if plannedStartTime is today or if the dueDate is today
+    //     return (taskDueDate === today);
+    // });
     return (
         <div className={`p-6 ${isDark ? "bg-gray-900 text-white" : "bg-white text-gray-900"} font-sans p-4`}>
             {/* Header */}
             <header className="flex justify-between items-center mb-6">
                 <h1 className="text-3xl font-bold">📊 Dashboard</h1>
-                <div className="flex space-x-4">
+                {/* <div className="flex space-x-4">
                     <Link to="/add-routine">
                         <button className={`px-4 py-2 rounded dark:bg-blue-700 dark:text-white bg-blue-500 text-white'}`}>
                             ➕ Add Routine
@@ -64,9 +84,15 @@ const Dashboard = () => {
                             😊 Track Mood
                         </button>
                     </Link>
-                </div>
+                </div> */}
             </header>
+            <Modal isOpen={isUpdateModalOpen} onClose={toggleUpdateModal}>
+                <TaskUpdateModal task={selectedTask} isOpen={isUpdateModalOpen} onClose={toggleUpdateModal} setSelectedTask={setSelectedTask} onUpdate={updateExistingTask} />
+            </Modal>
 
+            <Modal isOpen={isDeletModalOpen} onClose={toggleDeleteModal}>
+                <TaskDeleteModal task={selectedTask} isOpen={isDeletModalOpen} onClose={toggleDeleteModal} setSelectedTask={setSelectedTask} onUpdate={removeTask} />
+            </Modal>
             {/* Progress Bar Section */}
             <div className="flex flex-col gap-8">
                 <div className="bg-white dark:bg-[#1A1A1A] p-6 rounded-lg shadow-md">
@@ -94,18 +120,19 @@ const Dashboard = () => {
                 </div> */}
 
                 {/* Recent Tasks */}
-                <div className="bg-gray-800 p-6 rounded-lg shadow-md text-white">
+                <div className=" p-6 rounded-lg shadow-md ">
                     <h3 className="text-lg font-semibold mb-4">Recent Tasks</h3>
-                    <ul>
-                        {tasks.filter(task => new Date(task.dueDate.endDate) < new Date()).slice(0, 5).map((task, index) => (
-                            <li key={index} className="flex justify-between py-2 border-b border-gray-700">
-                                <span>{task.title}</span>
-                                <span className={task.completed ? "text-green-400" : "text-red-400"}>
-                                    {task.completed ? "Completed" : "Pending"}
-                                </span>
-                            </li>
-                        ))}
-                    </ul>
+                    <ListView
+                        tasks={todayTasks}
+                        NoDataConst="Congratulations! You have no tasks due today."
+                        // tasks={tasks.filter(task => new Date(task.dueDate.endDate) < new Date()).slice(0, 5)}
+                        toggleUpdateModal={toggleUpdateModal}
+                        toggleDeleteModal={toggleDeleteModal}
+                        setSelectedTask={setSelectedTask}
+                        page={page}
+                        setPage={setPage}
+                        totalTasks={todayTasks.length}
+                    />
                 </div>
             </div>
         </div>

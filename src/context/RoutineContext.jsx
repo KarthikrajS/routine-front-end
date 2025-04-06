@@ -1,14 +1,15 @@
 import { createContext, useState, useContext, useEffect } from 'react';
-import { fetchTasks, createTask, updateTask, deleteTask } from '../api';
+import { fetchTasks, createTask, updateTask, deleteTask, fetchTodayTasks } from '../api';
 import { useUser } from './UserContext';
 
 export const RoutineContext = createContext({
-    tasks: [], view: "", totalTasks: 0, addTask: () => { }, updateExistingTask: () => { }, removeTask: () => { }, setPage: () => { }, setView: () => { }
+    tasks: [], todayTasks: [], view: "", totalTasks: 0, addTask: () => { }, updateExistingTask: () => { }, removeTask: () => { }, setPage: () => { }, setView: () => { }
 });
 
 export const RoutineProvider = ({ children }) => {
-    const { token } = useUser();
+    const { token, user } = useUser();
     const [tasks, setTasks] = useState([]);
+    const [todayTasks, setTodayTasks] = useState([]);
     const [page, setPage] = useState(1);
     // const [date, setDate] = useState(new Date().toISOString().split('T')[0])
     const [totalPages, setTotalPages] = useState(1);
@@ -26,8 +27,21 @@ export const RoutineProvider = ({ children }) => {
                 })
                 .catch(console.error);
 
+
+
         }
     }, [token, page]);
+
+    useEffect(() => {
+        console.log(user?._id, "userasdsd");
+        if (user)
+            fetchTodayTasks(token, user._id)
+                .then((tasks) => {
+                    console.log(tasks, "asdsadtasks");
+                    setTodayTasks(tasks);
+                })
+                .catch(console.error);
+    }, [user, token]);
 
     const addTask = async (data) => {
         console.log(data, "data");
@@ -51,7 +65,7 @@ export const RoutineProvider = ({ children }) => {
 
 
     return (
-        <RoutineContext.Provider value={{ tasks, view, totalTasks, setView, setPage, addTask, updateExistingTask, removeTask }}>
+        <RoutineContext.Provider value={{ tasks, todayTasks, view, totalTasks, setView, setPage, addTask, updateExistingTask, removeTask }}>
             {children}
         </RoutineContext.Provider>
     );

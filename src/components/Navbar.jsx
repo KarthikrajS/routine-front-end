@@ -167,7 +167,7 @@ const Navbar = (props) => {
                     )}
                 </Button>
                 {/* Mood Selector (only visible when user is logged in) */}
-                {user !== null && <MoodSelector />}
+                {/* {user !== null && <MoodSelector />} */}
 
                 {/* Login/Register or Dropdown for logged-in user */}
                 {user == null ? (
